@@ -6,6 +6,6 @@ class Utils:
         self.task = sys.argv[0].split("/")[-1]
         self.input = self.task.replace("day", "input").replace(".py", ".txt")
 
-    def read_input_file(self) -> list:
+    def read_input_file(self, split=None) -> list:
         with open(self.input, 'r') as file:
-            return [word.strip() for word in file.read().split()]
+            return [word.strip() for word in file.read().split(split)]
