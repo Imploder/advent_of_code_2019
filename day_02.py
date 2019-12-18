@@ -2,6 +2,11 @@ from utils import Utils
 from typing import List
 
 
+def get_input_data():
+    input_data = task_helper.read_input_file(split=",")
+    return convert_string_list_to_int_list(input_data)
+
+
 def int_op_sum(intcode, int_list):
     """
     Sum the numbers in the first two positions and store the result in the third
@@ -41,23 +46,37 @@ def perform_operation(intcode_section, intcode_program):
     elif opcode == 2:
         int_op_multiply(intcode_section, intcode_program)
     elif opcode == 99:
-        print(f"Index 0 Value: {intcode_program[0]}")
-        print("Found 99, exiting")
-        exit()
+        return True
     else:
         raise Exception(f"This opcode: {opcode} is not valid.")
 
 
-if __name__ == '__main__':
-    task_helper = Utils()
-    input_data = task_helper.read_input_file(split=",")
-    intcode_program = convert_string_list_to_int_list(input_data)
-
-    # Emergency Fire Repairs:
-    intcode_program[1] = 12
-    intcode_program[2] = 2
-
+def intcode_computer(intcode_program):
     for position, integer in enumerate(intcode_program):
         if position == 0 or position % 4 == 0:
             intcode_section = intcode_program[position:position + 4]
-            perform_operation(intcode_section, intcode_program)
+            if perform_operation(intcode_section, intcode_program):
+                break
+
+    return intcode_program[0]
+
+
+if __name__ == '__main__':
+    task_helper = Utils()
+    intcode_program = get_input_data()
+
+    goal = 19690720
+    index_0 = intcode_program[0]
+
+    for noun in range(1, 100):
+        for verb in range(1, 100):
+            intcode_program[1] = noun
+            intcode_program[2] = verb
+
+            if goal == intcode_computer(intcode_program):
+                print(f"Found combination | noun: {noun} - verb: {verb}")
+                print(f"{100 * noun + verb}")
+                exit()
+            else:
+                intcode_program = get_input_data()
+
