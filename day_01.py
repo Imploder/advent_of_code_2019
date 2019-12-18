@@ -1,4 +1,5 @@
-raw_data = "input_01.txt"
+import os
+from utils import Utils
 
 
 def read_input_file(input_file):
@@ -21,5 +22,6 @@ def calculate_total_fuel_needed_for_mass(mass):
 
 
 if __name__ == '__main__':
-    mass_of_modules = read_input_file(raw_data)
+    task_helper = Utils()
+    mass_of_modules = read_input_file(task_helper.input)
     print(sum(calculate_total_fuel_needed_for_mass(int(module)) for module in mass_of_modules))
